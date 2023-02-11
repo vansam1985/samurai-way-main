@@ -3,36 +3,33 @@ import './App.css';
 import {Header} from "./components/Header/Header";
 import {Navbar} from "./components/Navbar/Navbar";
 import {Profile} from "./components/Profile/Profile";
-// import {DialogItem} from "./components/Dialogs/DialogItem/DialogItem";
-import {BrowserRouter, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import Dialog from "./components/Dialogs/Dialogs";
-import {ProfileType } from '.';
+import {changeNewTextCallback, newPostText, RootStateType, state, subscribe} from "./redux/state";
+import {renderTree} from "./render";
 
 
-export type PostType={
-    id:number
-    message:string
-    likesCount: number
+type AppPropsType = {
+    state: RootStateType
+    addPost: (postMessage: string) => void
+    newPostText:string
+    changeNewTextCallback:(newText:string)=>void
+
 }
 
-
-
-const App=(props:ProfileType) => {
+const App=(props:AppPropsType) => {
     return (
-        <BrowserRouter>
         <div className='app-wrapper'>
             <Header/>
             <Navbar/>
-
             <div className='app-wrapper-content'>
-                {/*<Route path='/dialogs' component={Dialog}/>*/}
-                {/*<Route path='/profile' component={Profile}/>*/}
-
-                <Route path={'/dialogs'} render={()=><Dialog/>}/>
-                <Route path={'/profile'} render={()=><Profile posts={props.posts}/>}/>
+                <Route path={'/dialogs'} render={()=><Dialog dialogsPage={props.state.dialogsPage}/>}/>
+                <Route path={'/profile'} render={()=><Profile profilePage={props.state.profilePage}
+                                                              addPost={props.addPost}
+                                                              newPostText={state.profilePage.newPostText}
+                                                              changeNewTextCallback={changeNewTextCallback}/>}/>
             </div>
         </div>
-        </BrowserRouter>
     )
         ;
 }

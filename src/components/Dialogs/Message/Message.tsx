@@ -9,4 +9,6 @@ const Message = (props: messageType) => {
     return <div className={s.messages}>{props.message}</div>
 }
 
+
+
 export default Message;
